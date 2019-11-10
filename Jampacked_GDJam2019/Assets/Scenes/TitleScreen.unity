@@ -526,6 +526,8 @@ MonoBehaviour:
   - {fileID: 519613946}
   MenuPanel: {fileID: 422642603}
   HelpPanel: {fileID: 1359896841}
+  soundPrefab: {fileID: 1516831519209384587, guid: ed5124dc297c1514cbb4ea8ca2295fc9,
+    type: 3}
 --- !u!1 &471327034
 GameObject:
   m_ObjectHideFlags: 0

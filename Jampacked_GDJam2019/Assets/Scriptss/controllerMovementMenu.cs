@@ -14,10 +14,18 @@ public class controllerMovementMenu : MonoBehaviour
     public GameObject HelpPanel;
     bool reset = false;
 
+    public GameObject soundPrefab;
+
+    private GameObject sound;
+
     // Start is called before the first frame update
     void Start()
     {
+        sound = Instantiate(soundPrefab);
+        DontDestroyOnLoad(sound);
 
+        GameObject.Find("mhappy").GetComponent<AudioSource>().loop = true;
+        GameObject.Find("mhappy").GetComponent<AudioSource>().Play();
     }
 
     // Update is called once per frame
@@ -38,6 +46,8 @@ public class controllerMovementMenu : MonoBehaviour
                     buttons[cursorPlace].color = Color.red;
                     reset = false;
                 }
+
+                GameObject.Find("uimove").GetComponent<AudioSource>().Play();
             }
             else if (Input.GetAxis(verticalController) < -0.5f)
             {
@@ -50,7 +60,9 @@ public class controllerMovementMenu : MonoBehaviour
                     reset = false;
                 }
 
+                GameObject.Find("uimove").GetComponent<AudioSource>().Play();
             }
+
         }
 
         if (Input.GetButtonUp(aButton)) 
@@ -70,6 +82,8 @@ public class controllerMovementMenu : MonoBehaviour
                 default:
                     break;
             }
+
+            GameObject.Find("uiselect").GetComponent<AudioSource>().Play();
         }
 
     }

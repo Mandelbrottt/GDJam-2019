@@ -38,13 +38,7 @@ public class controllerMovementMenu : MonoBehaviour
                 (Input.GetAxis(verticalController[2]) > 0.5f) ||
                 (Input.GetAxis(verticalController[3]) > 0.5f))
             {
-                if (cursorPlace != 2)
-                {
-                    buttons[cursorPlace].color = Color.black;
-                    cursorPlace++;
-                    buttons[cursorPlace].color = Color.red;
-                    reset = false;
-                }
+                reset = true;
             }
             else if ((Input.GetAxis(verticalController[0]) < -0.5f) ||
                      (Input.GetAxis(verticalController[1]) < -0.5f) ||
@@ -54,32 +48,49 @@ public class controllerMovementMenu : MonoBehaviour
 
                 if (cursorPlace != 0)
                 {
-                    buttons[cursorPlace].color = Color.black;
-                    cursorPlace--;
-                    buttons[cursorPlace].color = Color.red;
-                    reset = false;
+                    if (cursorPlace != 2)
+                    {
+                        buttons[cursorPlace].color = Color.black;
+                        cursorPlace++;
+                        buttons[cursorPlace].color = Color.red;
+                        reset = false;
+                    }
                 }
+                else if (Input.GetAxis(verticalController[i]) < -0.5f)
+                {
 
+                    if (cursorPlace != 0)
+                    {
+                        buttons[cursorPlace].color = Color.black;
+                        cursorPlace--;
+                        buttons[cursorPlace].color = Color.red;
+                        reset = false;
+                    }
+
+                }
             }
         }
 
 
         if ((Input.GetButtonUp(aPress[0])) || (Input.GetButtonUp(aPress[1])) || (Input.GetButtonUp(aPress[2])) || (Input.GetButtonUp(aPress[3])))
         {
-            switch (cursorPlace)
+            if (Input.GetButtonUp(aPress[i]))
             {
-                case 0:
-                    SceneManager.LoadScene("CharacterSelect");
-                    break;
-                case 1:
-                    MenuPanel.SetActive(false);
-                    HelpPanel.SetActive(true);
-                    break;
-                case 2:
-                    Application.Quit();
-                    break;
-                default:
-                    break;
+                switch (cursorPlace)
+                {
+                    case 0:
+                        SceneManager.LoadScene("CharacterSelect");
+                        break;
+                    case 1:
+                        MenuPanel.SetActive(false);
+                        HelpPanel.SetActive(true);
+                        break;
+                    case 2:
+                        Application.Quit();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

@@ -15,7 +15,7 @@ public class Gameplay : MonoBehaviour
     private float sceneTransitionTimer = 5.0f;
     private bool isGameFinished = false;
 
-    private float roundTransitionTimer = 3.0f;
+    private float roundTransitionTimer = 1.5f;
     private bool isRoundFinished = false;
 
     public GameObject gift;
@@ -104,11 +104,11 @@ public class Gameplay : MonoBehaviour
             {
                 isRoundFinished = false;
                 isRoundStart = true;
-                roundTransitionTimer = 3.0f;
+                roundTransitionTimer = 1.5f;
 
                 GameObject[] blobs = GameObject.FindGameObjectsWithTag("Blob");
                 foreach (GameObject blob in blobs)
-                    blob.GetComponent<Rigidbody2D>().velocity = new Vector2(0.001f, 0.001f);
+                    blob.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(2.0f, 4.0f), Random.Range(2.0f, 4.0f));
             }
         }
         else if (isGameFinished) //game is finished

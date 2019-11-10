@@ -74,6 +74,15 @@ public class Gameplay : MonoBehaviour
 
             if (bombTimer <= 0.0f)
             {
+                if (isFirstRound)
+                {
+                    GameObject.Find("mhappy").GetComponent<AudioSource>().Stop();
+                    GameObject.Find("mhectic").GetComponent<AudioSource>().loop = true;
+                    GameObject.Find("mhectic").GetComponent<AudioSource>().Play();
+                }
+
+                GameObject.Find("globdie").GetComponent<AudioSource>().Play();
+                
                 GameObject[] blobs = GameObject.FindGameObjectsWithTag("Blob");
                 int activeBlobs = 0;
                 for (int i = 0; i < blobs.Length; i++)

@@ -80,6 +80,19 @@ public class TestBlobMove : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        switch (Random.Range(0, 3))
+        {
+            case 0:
+                GameObject.Find("slime1").GetComponent<AudioSource>().Play();
+                break;
+            case 1:
+                GameObject.Find("slime2").GetComponent<AudioSource>().Play();
+                break;
+            case 2:
+                GameObject.Find("slime3").GetComponent<AudioSource>().Play();
+                break;
+        }
+
         if (collision.transform.tag == "Blob" && !giftGivenTo)
         {
             for (int i = 0; i < transform.childCount; i++)

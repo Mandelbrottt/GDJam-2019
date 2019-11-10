@@ -10,6 +10,8 @@ public class Gameplay : MonoBehaviour
     public float roundLength;
     private float bombTimer;
 
+    private bool isFirstRound = true;
+
     private bool isRoundStart = true;
 
     private float sceneTransitionTimer = 5.0f;

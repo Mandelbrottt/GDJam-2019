@@ -23,61 +23,66 @@ public class controllerMovementMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < verticalController.Length; i++)
+
+        if (((Input.GetAxis(verticalController[0]) < 0.5f) && (Input.GetAxis(verticalController[0]) > -0.5f)) && 
+            ((Input.GetAxis(verticalController[1]) < 0.5f) && (Input.GetAxis(verticalController[1]) > -0.5f)) &&
+            ((Input.GetAxis(verticalController[2]) < 0.5f) && (Input.GetAxis(verticalController[2]) > -0.5f)) &&
+            ((Input.GetAxis(verticalController[3]) < 0.5f) && (Input.GetAxis(verticalController[3]) > -0.5f)))
         {
-
-
-            if ((Input.GetAxis(verticalController[i]) < 0.5f && (Input.GetAxis(verticalController[i]) > -0.5f)) && reset != true)
-            {
-                reset = true;
-            }
-            if (reset)
-            {
-                if (Input.GetAxis(verticalController[i]) > 0.5f)
-                {
-                    if (cursorPlace != 2)
-                    {
-                        buttons[cursorPlace].color = Color.black;
-                        cursorPlace++;
-                        buttons[cursorPlace].color = Color.red;
-                        reset = false;
-                    }
-                }
-                else if (Input.GetAxis(verticalController[i]) < -0.5f)
-                {
-
-                    if (cursorPlace != 0)
-                    {
-                        buttons[cursorPlace].color = Color.black;
-                        cursorPlace--;
-                        buttons[cursorPlace].color = Color.red;
-                        reset = false;
-                    }
-
-                }
-            }
+            reset = true;
         }
-        for (int i = 0; i < aPress.Length; i++)
+        if (reset)
         {
-            if (Input.GetButtonUp(aPress[i]))
+            if ((Input.GetAxis(verticalController[0]) > 0.5f) ||
+                (Input.GetAxis(verticalController[1]) > 0.5f) ||
+                (Input.GetAxis(verticalController[2]) > 0.5f) ||
+                (Input.GetAxis(verticalController[3]) > 0.5f))
             {
-                switch (cursorPlace)
+                if (cursorPlace != 2)
                 {
-                    case 0:
-                        SceneManager.LoadScene("CharacterSelect");
-                        break;
-                    case 1:
-                        MenuPanel.SetActive(false);
-                        HelpPanel.SetActive(true);
-                        break;
-                    case 2:
-                        Application.Quit();
-                        break;
-                    default:
-                        break;
+                    buttons[cursorPlace].color = Color.black;
+                    cursorPlace++;
+                    buttons[cursorPlace].color = Color.red;
+                    reset = false;
                 }
+            }
+            else if ((Input.GetAxis(verticalController[0]) < -0.5f) ||
+                     (Input.GetAxis(verticalController[1]) < -0.5f) ||
+                     (Input.GetAxis(verticalController[2]) < -0.5f) ||
+                     (Input.GetAxis(verticalController[3]) < -0.5f))
+                {
+
+                if (cursorPlace != 0)
+                {
+                    buttons[cursorPlace].color = Color.black;
+                    cursorPlace--;
+                    buttons[cursorPlace].color = Color.red;
+                    reset = false;
+                }
+
             }
         }
 
+
+        if ((Input.GetButtonUp(aPress[0])) || (Input.GetButtonUp(aPress[1])) || (Input.GetButtonUp(aPress[2])) || (Input.GetButtonUp(aPress[3])))
+        {
+            switch (cursorPlace)
+            {
+                case 0:
+                    SceneManager.LoadScene("CharacterSelect");
+                    break;
+                case 1:
+                    MenuPanel.SetActive(false);
+                    HelpPanel.SetActive(true);
+                    break;
+                case 2:
+                    Application.Quit();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
+
 }
+

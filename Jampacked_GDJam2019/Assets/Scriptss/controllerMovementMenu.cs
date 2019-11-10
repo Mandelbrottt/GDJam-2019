@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class controllerMovementMenu : MonoBehaviour
 {
     string aButton = "AButton";
-    string verticalController = "Vertical";
+    string horizontalController = "Horizontal";
     int cursorPlace = 0;
     public Text[] buttons = new Text[3];
     public GameObject MenuPanel;
@@ -23,13 +23,13 @@ public class controllerMovementMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((Input.GetAxis(verticalController) < 0.5f && (Input.GetAxis(verticalController) > -0.5f)) && reset != true)
+        if ((Input.GetAxis(horizontalController) < 0.5f && (Input.GetAxis(horizontalController) > -0.5f)) && reset != true)
         {
             reset = true;
         }
         if (reset)
         {
-            if (Input.GetAxis(verticalController) > 0.5f)
+            if (Input.GetAxis(horizontalController) > 0.5f)
             {
                 if (cursorPlace != 2)
                 {
@@ -39,7 +39,7 @@ public class controllerMovementMenu : MonoBehaviour
                     reset = false;
                 }
             }
-            else if (Input.GetAxis(verticalController) < -0.5f)
+            else if (Input.GetAxis(horizontalController) < -0.5f)
             {
 
                 if (cursorPlace != 0)

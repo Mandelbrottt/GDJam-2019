@@ -81,7 +81,6 @@ public class CharacterSelect : MonoBehaviour
 
                     inactiveWindows[i].enabled = false;
                     characterSelectPrompts[i].enabled = true;
-                    characterSelectPrompts[i].GetComponent<Animator>().SetBool("isMoving", false);
                     playerTags[i].enabled = true;
                     buttonPrompts[i].enabled = false;
 
@@ -127,7 +126,6 @@ public class CharacterSelect : MonoBehaviour
                     currentBlobIndexSelected[i] = -1;
 
                     characterSelectPrompts[i].enabled = false;
-                    characterSelectPrompts[i].GetComponent<Animator>().SetBool("isMoving", true);
                     playerTags[i].enabled = false;
                     inactiveWindows[i].enabled = true;
                     buttonPrompts[i].enabled = true;
@@ -176,7 +174,6 @@ public class CharacterSelect : MonoBehaviour
             else if (Input.GetAxis(StickHorizontalName) < -0.5f && playersStates[i] == PlayerReadyState.joined &&
                      controlStickTimers[i] > controlStickResetTime)
             {
-                characterSelectPrompts[i].GetComponent<Animator>().SetBool("isShiftLeft", true);
                 controlStickTimers[i] = 0.0f;
 
                 Destroy(playerCharacterSelections[i]);

@@ -54,7 +54,7 @@ public class TestBlobMove : MonoBehaviour
             }
 
             GetComponent<Rigidbody2D>().velocity += new Vector2(horizontalInput, -verticalInput);
-            GetComponent<Rigidbody2D>().velocity = Vector2.ClampMagnitude(GetComponent<Rigidbody2D>().velocity, 10.0f);
+            GetComponent<Rigidbody2D>().velocity = Vector2.ClampMagnitude(GetComponent<Rigidbody2D>().velocity, 7.0f);
 
             if (GetComponentInChildren<LttieBabyFollow>())
                 isCarryingBomb = true;

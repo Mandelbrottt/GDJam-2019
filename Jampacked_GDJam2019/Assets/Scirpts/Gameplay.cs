@@ -44,9 +44,7 @@ public class Gameplay : MonoBehaviour
             {
                 if (isFirstRound)
                 {
-                    //TODO: DELETE THIS AND UNCOMMENT THE ONE BELOW IT
-                    currentLevelIndex = Random.Range(1, levelsList.Length);
-                    //currentLevelIndex = 0;
+                    currentLevelIndex = 0;
                     isFirstRound = false;
                 }
                 else
@@ -114,25 +112,23 @@ public class Gameplay : MonoBehaviour
                 GameObject.Find("globdie").GetComponent<AudioSource>().Play();
                 
                 GameObject[] blobs = GameObject.FindGameObjectsWithTag("Blob");
-                int activeBlobs = 0;
+                int numBlobs = 0;
                 for (int i = 0; i < blobs.Length; i++)
                 {
                     if (blobs[i].GetComponent<TestBlobMove>().isCarryingBomb)
                     {
-                        //blobs[i].GetComponent<TestBlobMove>().isActive = false;
+                        blobs[i].GetComponent<TestBlobMove>().isActive = false;
                         blobs[i].GetComponent<TestBlobMove>().isCarryingBomb = false;
 
-                        //TODO: UNCOMMENT THIS
-                        //Destroy(blobs[i]);
+                        Destroy(blobs[i]);
 
                         isRoundFinished = true; //start a new round
                     }
-
-                    if (blobs[i].GetComponent<TestBlobMove>().isActive)
-                        activeBlobs++;
+                    else
+                        numBlobs++;
                 }
 
-                if (activeBlobs <= 1)
+                if (numBlobs <= 1)
                 {
                     isGameFinished = true;
                 }

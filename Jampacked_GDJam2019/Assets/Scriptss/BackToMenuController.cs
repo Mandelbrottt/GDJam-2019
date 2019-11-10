@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class BackToMenuController : MonoBehaviour
 {
-    string aPress = "P1A";
+    string[] aPress = new string[] {"P1A", "P2A", "P3A", "P4A", };
     public GameObject MenuPanel;
     public GameObject HelpPanel;
-    bool firstFrame = true;
+
     // Update is called once per frame
     void Update()
     {
-        if (!firstFrame)
+        for (int i = 0; i < aPress.Length; i++)
         {
-            if (Input.GetButtonUp(aPress))
+            if (Input.GetButtonUp(aPress[i]))
             {
                 MenuPanel.SetActive(true);
                 HelpPanel.SetActive(false);
             }
         }
-        firstFrame = false;
     }
 }

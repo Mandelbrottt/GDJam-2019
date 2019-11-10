@@ -34,7 +34,6 @@ public class CharacterSelect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         blobList = Resources.LoadAll<GameObject>("Prefabs");
 
         playersStates = new PlayerReadyState[4];

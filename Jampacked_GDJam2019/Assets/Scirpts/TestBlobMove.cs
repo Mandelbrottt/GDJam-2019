@@ -6,50 +6,65 @@ public class TestBlobMove : MonoBehaviour
 {
     public int playerNum;
 
-    private bool giftGivenTo = false;
-    private float speed = 12.0f;
+    public bool isActive = true;
+    public bool isCarryingBomb;
 
-    private static int giftStarter = -1;
-    public GameObject gift;
+    public bool giftGivenTo = false;
+    private float speed = 12.0f;
+    private Animator anim;
+
+    public static int giftStarter = -1;
 
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody2D>().velocity = new Vector2(4.0f, 3.0f);
-
-        if (giftStarter == -1)
-        {
-            giftStarter = Random.Range(1, 5);
-        }
-
-        if (giftStarter == playerNum)
-        {
-            var g = Instantiate(gift);
-            g.transform.parent = gameObject.transform;
-        }
+        GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(2.0f, 4.0f), Random.Range(2.0f, 4.0f));
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        giftGivenTo = false;
-        
-        float verticalInput = 0.0f;
-        float horizontalInput = 0.0f;
-
-        if (playerNum == 1)
+        if (isActive)
         {
-            verticalInput = Input.GetAxis("P1Vertical") * speed * Time.deltaTime;
-            horizontalInput = Input.GetAxis("P1Horizontal") * speed * Time.deltaTime;
-        }
-        else if (playerNum == 2)
-        {
-            verticalInput = Input.GetAxis("P2Vertical") * speed * Time.deltaTime;
-            horizontalInput = Input.GetAxis("P2Horizontal") * speed * Time.deltaTime;
-        }
+            giftGivenTo = false;
 
-        GetComponent<Rigidbody2D>().velocity += new Vector2(horizontalInput, -verticalInput);
-        GetComponent<Rigidbody2D>().velocity = Vector2.ClampMagnitude(GetComponent<Rigidbody2D>().velocity, 6.0f);
+            float horizontalInput = 0.0f;
+            float verticalInput = 0.0f;
+
+            if (playerNum == 0)
+            {
+                verticalInput = Input.GetAxis("P1Vertical") * speed * Time.deltaTime;
+                horizontalInput = Input.GetAxis("P1Horizontal") * speed * Time.deltaTime;
+            }
+            else if (playerNum == 1)
+            {
+                verticalInput = Input.GetAxis("P2Vertical") * speed * Time.deltaTime;
+                horizontalInput = Input.GetAxis("P2Horizontal") * speed * Time.deltaTime;
+            }
+            else if (playerNum == 2)
+            {
+                verticalInput = Input.GetAxis("P3Vertical") * speed * Time.deltaTime;
+                horizontalInput = Input.GetAxis("P3Horizontal") * speed * Time.deltaTime;
+            }
+            else if (playerNum == 3)
+            {
+                verticalInput = Input.GetAxis("P4Vertical") * speed * Time.deltaTime;
+                horizontalInput = Input.GetAxis("P4Horizontal") * speed * Time.deltaTime;
+            }
+
+            GetComponent<Rigidbody2D>().velocity += new Vector2(horizontalInput, -verticalInput);
+            GetComponent<Rigidbody2D>().velocity = Vector2.ClampMagnitude(GetComponent<Rigidbody2D>().velocity, 10.0f);
+
+            if (GetComponentInChildren<LttieBabyFollow>())
+                isCarryingBomb = true;
+            else
+                isCarryingBomb = false;
+        }
+        else //blob is inactive
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
+        }
 
         if (GetComponent<Rigidbody2D>().velocity.x <= 0)
         {
@@ -59,9 +74,11 @@ public class TestBlobMove : MonoBehaviour
         {
             GetComponentInChildren<SpriteRenderer>().flipX = false;
         }
+
+        setAnimationState();
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.tag == "Blob" && !giftGivenTo)
         {
@@ -69,13 +86,36 @@ public class TestBlobMove : MonoBehaviour
             {
                 if (transform.GetChild(i).tag == "Gift")
                 {
+                    var arr = GameObject.FindGameObjectsWithTag("Gift");
                     collision.gameObject.GetComponent<TestBlobMove>().giftGivenTo = true;
-                    transform.GetChild(i).SetParent(collision.gameObject.transform);
+                    foreach (GameObject obj in arr)
+                    {
+                        obj.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+                        obj.transform.SetParent(collision.gameObject.transform);
+                    }
                 }
             }
         }
     }
 
-    //add states and shit for animation purposes//
-    // - Marcus
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        anim.SetBool("isColliding", true);
+    }
+
+    void setAnimationState()
+    {
+        if (GetComponent<Rigidbody2D>().velocity.magnitude <= 1.0f)
+        {
+            anim.SetBool("isIdle", true);
+            anim.SetBool("isMoving", false);
+            anim.SetBool("isColliding", false);
+        }
+        else
+        {
+            anim.SetBool("isIdle", false);
+            anim.SetBool("isMoving", true);
+            anim.SetBool("isColliding", false);
+        }
+    }
 }

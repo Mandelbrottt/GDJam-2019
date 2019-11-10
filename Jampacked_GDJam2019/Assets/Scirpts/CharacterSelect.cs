@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CharacterSelect : MonoBehaviour
 {
@@ -13,8 +14,11 @@ public class CharacterSelect : MonoBehaviour
 
     private PlayerReadyState[] playersStates;
 
+    [SerializeField] private SpriteRenderer[] inactiveWindows;
     [SerializeField] private SpriteRenderer[] buttonPrompts;
     [SerializeField] private SpriteRenderer[] characterSelectPrompts;
+    [SerializeField] private SpriteRenderer[] playerTags;
+    [SerializeField] private GameObject  pressStartPrompt;
 
     public GameObject[] playerCharacterSelections;
 
@@ -24,9 +28,13 @@ public class CharacterSelect : MonoBehaviour
     private float[] controlStickTimers;
     private float controlStickResetTime = 0.4f;
 
+    public GameObject giftPrefab;
+    public GameObject crownPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
+
         blobList = Resources.LoadAll<GameObject>("Prefabs");
 
         playersStates = new PlayerReadyState[4];
@@ -34,10 +42,12 @@ public class CharacterSelect : MonoBehaviour
 
         controlStickTimers = new float[4];
 
+
         for (int i = 0; i < playersStates.Length; i++)
         {
             playersStates[i] = PlayerReadyState.notJoined;
             characterSelectPrompts[i].enabled = false;
+            playerTags[i].enabled = false;
             currentBlobIndexSelected[i] = -1;
             controlStickTimers[i] = 0.0f;
         }
@@ -51,25 +61,28 @@ public class CharacterSelect : MonoBehaviour
         for (int i = 0; i < playersStates.Length; i++)
         {
             controlStickTimers[i] += Time.deltaTime;
-            
+
             //get correct player number on the buttons
-            string AButtonName         = "P" + (i + 1).ToString() + "A";
-            string BButtonName         = "P" + (i + 1).ToString() + "B";
-            string StickVerticalName   = "P" + (i + 1).ToString() + "Vertical";
+            string AButtonName = "P" + (i + 1).ToString() + "A";
+            string BButtonName = "P" + (i + 1).ToString() + "B";
+            string StickVerticalName = "P" + (i + 1).ToString() + "Vertical";
             string StickHorizontalName = "P" + (i + 1).ToString() + "Horizontal";
 
             //this is jank but basically it automatically reactivates the control stick selection when the stick is at rest
             if ((Input.GetAxis(StickHorizontalName) < 0.5f && (Input.GetAxis(StickHorizontalName) > -0.5f)))
                 controlStickTimers[i] = 1.0f;
-
+             
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////
             if (Input.GetButtonDown(AButtonName))
             {
                 if (playersStates[i] == PlayerReadyState.notJoined)
                 {
                     playersStates[i] = PlayerReadyState.joined;
 
-                    buttonPrompts[i].enabled = false;
+                    inactiveWindows[i].enabled = false;
                     characterSelectPrompts[i].enabled = true;
+                    playerTags[i].enabled = true;
+                    buttonPrompts[i].enabled = false;
 
                     bool isValid = false;
                     int selectedIndex = currentBlobIndexSelected[i];
@@ -93,7 +106,8 @@ public class CharacterSelect : MonoBehaviour
                     playerCharacterSelections[i] = Instantiate(blobList[currentBlobIndexSelected[i]]);
                     Destroy(playerCharacterSelections[i].GetComponent<TestBlobMove>());
 
-                    playerCharacterSelections[i].transform.position += new Vector3(-9.0f + (2.0f * i + 1.0f) * 18.0f / 8.0f, -1.5f);
+                    playerCharacterSelections[i].transform.position +=
+                        new Vector3(-9.0f + (2.0f * i + 0.95f) * 18.0f / 8.0f, 0.3f);
                 }
                 else if (playersStates[i] == PlayerReadyState.joined)
                 {
@@ -112,6 +126,8 @@ public class CharacterSelect : MonoBehaviour
                     currentBlobIndexSelected[i] = -1;
 
                     characterSelectPrompts[i].enabled = false;
+                    playerTags[i].enabled = false;
+                    inactiveWindows[i].enabled = true;
                     buttonPrompts[i].enabled = true;
 
                     Destroy(playerCharacterSelections[i]);
@@ -124,7 +140,8 @@ public class CharacterSelect : MonoBehaviour
                 }
             }
 
-            if (Input.GetAxis(StickHorizontalName) > 0.5f && playersStates[i] == PlayerReadyState.joined && controlStickTimers[i] > controlStickResetTime)
+            if (Input.GetAxis(StickHorizontalName) > 0.5f && playersStates[i] == PlayerReadyState.joined &&
+                controlStickTimers[i] > controlStickResetTime)
             {
                 controlStickTimers[i] = 0.0f;
 
@@ -151,9 +168,11 @@ public class CharacterSelect : MonoBehaviour
 
                 playerCharacterSelections[i] = Instantiate(blobList[currentBlobIndexSelected[i]]);
                 Destroy(playerCharacterSelections[i].GetComponent<TestBlobMove>());
-                playerCharacterSelections[i].transform.position += new Vector3(-9.0f + (2.0f * i + 1.0f) * 18.0f / 8.0f, -1.5f);
+                playerCharacterSelections[i].transform.position += new Vector3(-9.0f + (2.0f * i + 0.95f) * 18.0f / 8.0f, 0.3f);
+                playerCharacterSelections[i].transform.localScale = new Vector3(10.0f, 10.0f, 1.0f);
             }
-            else if (Input.GetAxis(StickHorizontalName) < -0.5f && playersStates[i] == PlayerReadyState.joined && controlStickTimers[i] > controlStickResetTime)
+            else if (Input.GetAxis(StickHorizontalName) < -0.5f && playersStates[i] == PlayerReadyState.joined &&
+                     controlStickTimers[i] > controlStickResetTime)
             {
                 controlStickTimers[i] = 0.0f;
 
@@ -180,8 +199,49 @@ public class CharacterSelect : MonoBehaviour
 
                 playerCharacterSelections[i] = Instantiate(blobList[currentBlobIndexSelected[i]]);
                 Destroy(playerCharacterSelections[i].GetComponent<TestBlobMove>());
-                playerCharacterSelections[i].transform.position += new Vector3(-9.0f + (2.0f * i + 1.0f) * 18.0f / 8.0f, -1.5f);
+                playerCharacterSelections[i].transform.position += new Vector3(-9.0f + (2.0f * i + 0.95f) * 18.0f / 8.0f, 0.3f);
             }
         }
+
+        int numPlayersReady = 0;
+        for (int i = 0; i < playersStates.Length; i++)
+        {
+            if (playersStates[i] == PlayerReadyState.ready)
+                numPlayersReady++;
+        }
+        //check if the game should start (start button is pressed and at least two players are ready)
+        if (numPlayersReady >= 2)
+        {
+            bool isAnyoneNotReady = false;
+            for (int i = 0; i < playersStates.Length; i++)
+            {
+                if (playersStates[i] == PlayerReadyState.joined)
+                    isAnyoneNotReady = true;
+            }
+
+            if (!isAnyoneNotReady)
+                pressStartPrompt.GetComponent<SpriteRenderer>().enabled = true;
+
+            else
+                pressStartPrompt.GetComponent<SpriteRenderer>().enabled = false;
+
+
+            if (Input.GetButtonDown("Start") && !isAnyoneNotReady)
+            {
+                for (int i = 0; i < playersStates.Length; i++)
+                {
+                    if (playersStates[i] == PlayerReadyState.ready)
+                    {
+                        playerCharacterSelections[i].AddComponent<TestBlobMove>();
+                        playerCharacterSelections[i].GetComponent<TestBlobMove>().playerNum = i;
+
+                        DontDestroyOnLoad(playerCharacterSelections[i]);
+                    }
+                }
+                SceneManager.LoadScene("Gameplay");
+            }
+        }
+        else
+            pressStartPrompt.GetComponent<SpriteRenderer>().enabled = false;
     }
 }

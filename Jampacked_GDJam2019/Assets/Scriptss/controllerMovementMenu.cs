@@ -28,9 +28,12 @@ public class controllerMovementMenu : MonoBehaviour
         GameObject.Find("mhappy").GetComponent<AudioSource>().Play();
     }
 
+    private bool playSound = false;
+    
     // Update is called once per frame
     void Update()
     {
+        
         if ((Input.GetAxis(verticalController) < 0.5f && (Input.GetAxis(verticalController) > -0.5f)) && reset != true)
         {
             reset = true;
@@ -47,7 +50,11 @@ public class controllerMovementMenu : MonoBehaviour
                     reset = false;
                 }
 
-                GameObject.Find("uimove").GetComponent<AudioSource>().Play();
+                if (!playSound)
+                {
+                    GameObject.Find("uimove").GetComponent<AudioSource>().Play();
+                    playSound = true;
+                }
             }
             else if (Input.GetAxis(verticalController) < -0.5f)
             {
@@ -60,7 +67,15 @@ public class controllerMovementMenu : MonoBehaviour
                     reset = false;
                 }
 
-                GameObject.Find("uimove").GetComponent<AudioSource>().Play();
+                if (!playSound)
+                {
+                    GameObject.Find("uimove").GetComponent<AudioSource>().Play();
+                    playSound = true;
+                }
+            }
+            else
+            {
+                playSound = false;
             }
 
         }

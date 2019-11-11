@@ -20,6 +20,10 @@ public class Gameplay : MonoBehaviour
     private float roundTransitionTimer = 1.5f;
     private bool isRoundFinished = false;
 
+    public static GameObject[] levelsList;
+    private GameObject currentLevel;
+    private int currentLevelIndex;
+
     public GameObject gift;
     public GameObject crown;
 
@@ -27,6 +31,8 @@ public class Gameplay : MonoBehaviour
     void Start()
     {
         winnerText.enabled = false;
+
+        levelsList = Resources.LoadAll<GameObject>("Levels");
     }
 
     // Update is called once per frame
@@ -36,6 +42,28 @@ public class Gameplay : MonoBehaviour
         {
             if (isRoundStart)
             {
+                if (isFirstRound)
+                {
+                    currentLevelIndex = 0;
+                    isFirstRound = false;
+                }
+                else
+                {
+                    int newLevelIndex = 1;
+                    bool isUniqueLevel = false;
+                    while (!isUniqueLevel)
+                    {
+                        newLevelIndex = Random.Range(1, levelsList.Length);
+                        if (newLevelIndex != currentLevelIndex)
+                            isUniqueLevel = true;
+                    }
+
+                    currentLevelIndex = newLevelIndex;
+                }
+
+                Destroy(currentLevel);
+                currentLevel = Instantiate(levelsList[currentLevelIndex]);
+
                 bombTimer = roundLength;
 
                 List<int> playerNums = new List<int>();
@@ -75,7 +103,7 @@ public class Gameplay : MonoBehaviour
             if (bombTimer <= 0.0f)
             {
                 GameObject[] blobs = GameObject.FindGameObjectsWithTag("Blob");
-                int activeBlobs = 0;
+                int numBlobs = 0;
                 for (int i = 0; i < blobs.Length; i++)
                 {
                     if (blobs[i].GetComponent<TestBlobMove>().isCarryingBomb)
@@ -87,12 +115,11 @@ public class Gameplay : MonoBehaviour
 
                         isRoundFinished = true; //start a new round
                     }
-
-                    if (blobs[i].GetComponent<TestBlobMove>().isActive)
-                        activeBlobs++;
+                    else
+                        numBlobs++;
                 }
 
-                if (activeBlobs <= 1)
+                if (numBlobs <= 1)
                 {
                     isGameFinished = true;
                 }
@@ -110,7 +137,7 @@ public class Gameplay : MonoBehaviour
 
                 GameObject[] blobs = GameObject.FindGameObjectsWithTag("Blob");
                 foreach (GameObject blob in blobs)
-                    blob.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(2.0f, 4.0f), Random.Range(2.0f, 4.0f));
+                    blob.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(1.0f, 2.0f), Random.Range(1.0f, 2.0f));
             }
         }
         else if (isGameFinished) //game is finished

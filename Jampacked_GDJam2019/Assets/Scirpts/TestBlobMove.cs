@@ -18,7 +18,7 @@ public class TestBlobMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(2.0f, 4.0f), Random.Range(2.0f, 4.0f));
+        GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(1.0f, 2.0f), Random.Range(1.0f, 2.0f));
         anim = GetComponent<Animator>();
     }
 
@@ -54,7 +54,7 @@ public class TestBlobMove : MonoBehaviour
             }
 
             GetComponent<Rigidbody2D>().velocity += new Vector2(horizontalInput, -verticalInput);
-            GetComponent<Rigidbody2D>().velocity = Vector2.ClampMagnitude(GetComponent<Rigidbody2D>().velocity, 10.0f);
+            GetComponent<Rigidbody2D>().velocity = Vector2.ClampMagnitude(GetComponent<Rigidbody2D>().velocity, 7.0f);
 
             if (GetComponentInChildren<LttieBabyFollow>())
                 isCarryingBomb = true;

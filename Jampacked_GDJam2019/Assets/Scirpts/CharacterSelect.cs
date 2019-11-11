@@ -158,6 +158,7 @@ public class CharacterSelect : MonoBehaviour
                     playersStates[i] = PlayerReadyState.joined;
 
                     characterSelectPrompts[i].enabled = true;
+                    selectionArrows[i].enabled = true;
                 }
             }
 

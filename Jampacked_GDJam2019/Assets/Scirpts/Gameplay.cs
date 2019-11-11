@@ -8,7 +8,7 @@ public class Gameplay : MonoBehaviour
     [SerializeField] private SpriteRenderer winnerText;
 
     public float roundLength;
-    private float bombTimer;
+    private float bombTimer = 1;
 
     private bool isFirstRound = true;
 
@@ -23,6 +23,8 @@ public class Gameplay : MonoBehaviour
     public GameObject gift;
     public GameObject crown;
     public GameObject boom;
+
+    private GameObject boomHandle;
 
     // Start is called before the first frame update
     void Start()
@@ -84,8 +86,8 @@ public class Gameplay : MonoBehaviour
                         blobs[i].GetComponent<TestBlobMove>().isActive = false;
                         blobs[i].GetComponent<TestBlobMove>().isCarryingBomb = false;
 
-                        Instantiate(boom);
-                        boom.transform.position = blobs[i].transform.position;
+                        boomHandle = Instantiate(boom);
+                        boomHandle.transform.position = blobs[i].transform.position;
                         Destroy(blobs[i]);
                         
 
@@ -108,6 +110,10 @@ public class Gameplay : MonoBehaviour
 
             if (roundTransitionTimer < 0.0f)
             {
+                Debug.Log(boomHandle);
+
+                Destroy(boomHandle);
+
                 isRoundFinished = false;
                 isRoundStart = true;
                 roundTransitionTimer = 1.5f;

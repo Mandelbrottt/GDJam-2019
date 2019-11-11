@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class BackToMenuController : MonoBehaviour
 {
-    string aPress = "P1A";
+    string aPress = "AButton";
+    private string bPress = "BButton";
     public GameObject MenuPanel;
     public GameObject HelpPanel;
     bool firstFrame = true;
@@ -13,7 +14,7 @@ public class BackToMenuController : MonoBehaviour
     {
         if (!firstFrame)
         {
-            if (Input.GetButtonUp(aPress))
+            if (Input.GetButtonDown(aPress) || Input.GetButtonDown(bPress))
             {
                 MenuPanel.SetActive(true);
                 HelpPanel.SetActive(false);

@@ -53,7 +53,7 @@ public class controllerMovementMenu : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonUp(aButton)) 
+        if (Input.GetButtonDown(aButton)) 
         {
             switch (cursorPlace)
             {

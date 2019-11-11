@@ -753,6 +753,7 @@ GameObject:
   - component: {fileID: 422642606}
   - component: {fileID: 422642605}
   - component: {fileID: 422642607}
+  - component: {fileID: 422642608}
   m_Layer: 5
   m_Name: MenuPanel
   m_TagString: Untagged
@@ -838,12 +839,16 @@ MonoBehaviour:
   - {fileID: 519613946}
   MenuPanel: {fileID: 422642603}
   HelpPanel: {fileID: 1359896841}
---- !u!4 &469467684 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1870261153350494423, guid: 0b7acd9dcd49ae9449eec6b958cdca9d,
+  soundPrefab: {fileID: 1516831519209384587, guid: ed5124dc297c1514cbb4ea8ca2295fc9,
     type: 3}
-  m_PrefabInstance: {fileID: 1863066349}
+--- !u!81 &422642608
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422642603}
+  m_Enabled: 1
 --- !u!1 &471327034
 GameObject:
   m_ObjectHideFlags: 0

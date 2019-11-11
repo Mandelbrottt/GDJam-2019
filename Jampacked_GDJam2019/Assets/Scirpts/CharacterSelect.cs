@@ -34,7 +34,6 @@ public class CharacterSelect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         blobList = Resources.LoadAll<GameObject>("Prefabs");
 
         playersStates = new PlayerReadyState[4];
@@ -53,6 +52,13 @@ public class CharacterSelect : MonoBehaviour
         }
 
         playerCharacterSelections = new GameObject[4];
+
+        if (GameObject.Find("mhectic").GetComponent<AudioSource>().isPlaying)
+        {
+            GameObject.Find("mhectic").GetComponent<AudioSource>().Stop();
+            GameObject.Find("mhappy").GetComponent<AudioSource>().Play();
+            GameObject.Find("mhappy").GetComponent<AudioSource>().loop = true;
+        }
     }
 
     // Update is called once per frame

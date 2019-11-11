@@ -233,6 +233,7 @@ MonoBehaviour:
   roundLength: 10
   gift: {fileID: 5232027615604060783, guid: aa6dcb517cfaaa34a977325bcb802fd5, type: 3}
   crown: {fileID: 5232027615604060783, guid: ee987825ff38d8841b486197cf87da40, type: 3}
+  boom: {fileID: 6750225127326556637, guid: f9ea29285b5beda4c9e4d94e6308c1ef, type: 3}
 --- !u!4 &506785278
 Transform:
   m_ObjectHideFlags: 0

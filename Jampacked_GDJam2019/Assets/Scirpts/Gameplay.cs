@@ -22,6 +22,7 @@ public class Gameplay : MonoBehaviour
 
     public GameObject gift;
     public GameObject crown;
+    public GameObject boom;
 
     // Start is called before the first frame update
     void Start()
@@ -83,7 +84,10 @@ public class Gameplay : MonoBehaviour
                         blobs[i].GetComponent<TestBlobMove>().isActive = false;
                         blobs[i].GetComponent<TestBlobMove>().isCarryingBomb = false;
 
+                        Instantiate(boom);
+                        boom.transform.position = blobs[i].transform.position;
                         Destroy(blobs[i]);
+                        
 
                         isRoundFinished = true; //start a new round
                     }

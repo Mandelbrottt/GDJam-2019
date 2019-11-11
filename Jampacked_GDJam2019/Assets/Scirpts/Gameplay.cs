@@ -45,7 +45,6 @@ public class Gameplay : MonoBehaviour
                 if (isFirstRound)
                 {
                     currentLevelIndex = 0;
-                    isFirstRound = false;
                 }
                 else
                 {
@@ -102,6 +101,17 @@ public class Gameplay : MonoBehaviour
 
             if (bombTimer <= 0.0f)
             {
+                if (isFirstRound)
+                {
+                    GameObject.Find("mhappy").GetComponent<AudioSource>().Stop();
+                    GameObject.Find("mhectic").GetComponent<AudioSource>().loop = true;
+                    GameObject.Find("mhectic").GetComponent<AudioSource>().Play();
+                    
+                    isFirstRound = false;
+                }
+
+                GameObject.Find("boom").GetComponent<AudioSource>().Play();
+                
                 GameObject[] blobs = GameObject.FindGameObjectsWithTag("Blob");
                 int numBlobs = 0;
                 for (int i = 0; i < blobs.Length; i++)

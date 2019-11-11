@@ -24,6 +24,6 @@ public class gameplayBackground : MonoBehaviour
 
         GameObject[] blobs2 = GameObject.FindGameObjectsWithTag("Blob");
         for (int i = 0; i < blobs2.Length; i++)
-            blobs2[i].GetComponent<Rigidbody2D>().velocity *= 1.2f;
+            blobs2[i].GetComponent<Rigidbody2D>().velocity *= 1.1f;
     }
 }

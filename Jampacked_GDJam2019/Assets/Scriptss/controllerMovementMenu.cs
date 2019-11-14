@@ -8,18 +8,28 @@ public class controllerMovementMenu : MonoBehaviour
 {
     string aButton = "AButton";
     string horizontalController = "Horizontal";
-    int cursorPlace = 0;
+    int cursorPlace = 1;
     public Text[] buttons = new Text[3];
     public GameObject MenuPanel;
     public GameObject HelpPanel;
     bool reset = false;
 
+    public GameObject soundPrefab;
+
+    private GameObject sound;
+
     // Start is called before the first frame update
     void Start()
     {
+        sound = Instantiate(soundPrefab);
+        DontDestroyOnLoad(sound);
 
+        GameObject.Find("mhappy").GetComponent<AudioSource>().loop = true;
+        GameObject.Find("mhappy").GetComponent<AudioSource>().Play();
     }
 
+    private bool playSound = false;
+    
     // Update is called once per frame
     void Update()
     {
@@ -38,6 +48,12 @@ public class controllerMovementMenu : MonoBehaviour
                     buttons[cursorPlace].color = Color.red;
                     reset = false;
                 }
+
+                if (!playSound)
+                {
+                    GameObject.Find("uimove").GetComponent<AudioSource>().Play();
+                    playSound = true;
+                }
             }
             else if (Input.GetAxis(horizontalController) < -0.5f)
             {
@@ -50,17 +66,27 @@ public class controllerMovementMenu : MonoBehaviour
                     reset = false;
                 }
 
+                if (!playSound)
+                {
+                    GameObject.Find("uimove").GetComponent<AudioSource>().Play();
+                    playSound = true;
+                }
             }
+            else
+            {
+                playSound = false;
+            }
+
         }
 
-        if (Input.GetButtonUp(aButton)) 
+        if (Input.GetButtonDown(aButton)) 
         {
             switch (cursorPlace)
             {
-                case 0:
+                case 1:
                     SceneManager.LoadScene("CharacterSelect");
                     break;
-                case 1:
+                case 0:
                     MenuPanel.SetActive(false);
                     HelpPanel.SetActive(true);
                     break;
@@ -70,6 +96,8 @@ public class controllerMovementMenu : MonoBehaviour
                 default:
                     break;
             }
+
+            GameObject.Find("uiselect").GetComponent<AudioSource>().Play();
         }
 
     }

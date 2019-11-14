@@ -35,7 +35,6 @@ public class CharacterSelect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         blobList = Resources.LoadAll<GameObject>("Prefabs");
 
         playersStates = new PlayerReadyState[4];
@@ -55,6 +54,13 @@ public class CharacterSelect : MonoBehaviour
         }
 
         playerCharacterSelections = new GameObject[4];
+
+        if (GameObject.Find("mhectic").GetComponent<AudioSource>().isPlaying)
+        {
+            GameObject.Find("mhectic").GetComponent<AudioSource>().Stop();
+            GameObject.Find("mhappy").GetComponent<AudioSource>().Play();
+            GameObject.Find("mhappy").GetComponent<AudioSource>().loop = true;
+        }
     }
 
     // Update is called once per frame
@@ -77,6 +83,11 @@ public class CharacterSelect : MonoBehaviour
             ////////////////////////////////////////////////////////////////////////////////////////////////////////
             if (Input.GetButtonDown(AButtonName))
             {
+                if (playersStates[i] != PlayerReadyState.ready)
+                {
+                    GameObject.Find("uiselect").GetComponent<AudioSource>().Play();
+                }
+                
                 if (playersStates[i] == PlayerReadyState.notJoined)
                 {
                     playersStates[i] = PlayerReadyState.joined;
@@ -123,6 +134,11 @@ public class CharacterSelect : MonoBehaviour
 
             else if (Input.GetButtonDown(BButtonName))
             {
+                if (playersStates[i] != PlayerReadyState.notJoined)
+                {
+                    GameObject.Find("uiselect").GetComponent<AudioSource>().Play();
+                }
+                
                 if (playersStates[i] == PlayerReadyState.joined)
                 {
                     playersStates[i] = PlayerReadyState.notJoined;
@@ -142,12 +158,15 @@ public class CharacterSelect : MonoBehaviour
                     playersStates[i] = PlayerReadyState.joined;
 
                     characterSelectPrompts[i].enabled = true;
+                    selectionArrows[i].enabled = true;
                 }
             }
 
             if (Input.GetAxis(StickHorizontalName) > 0.5f && playersStates[i] == PlayerReadyState.joined &&
                 controlStickTimers[i] > controlStickResetTime)
             {
+                GameObject.Find("uimove").GetComponent<AudioSource>().Play();
+
                 controlStickTimers[i] = 0.0f;
 
                 Destroy(playerCharacterSelections[i]);
@@ -179,6 +198,8 @@ public class CharacterSelect : MonoBehaviour
             else if (Input.GetAxis(StickHorizontalName) < -0.5f && playersStates[i] == PlayerReadyState.joined &&
                      controlStickTimers[i] > controlStickResetTime)
             {
+                GameObject.Find("uimove").GetComponent<AudioSource>().Play();
+
                 controlStickTimers[i] = 0.0f;
 
                 Destroy(playerCharacterSelections[i]);
@@ -233,6 +254,8 @@ public class CharacterSelect : MonoBehaviour
 
             if (Input.GetButtonDown("Start") && !isAnyoneNotReady)
             {
+                GameObject.Find("uiselect").GetComponent<AudioSource>().Play();
+
                 for (int i = 0; i < playersStates.Length; i++)
                 {
                     if (playersStates[i] == PlayerReadyState.ready)
